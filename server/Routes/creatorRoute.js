@@ -8,12 +8,13 @@ const { creatorauth } = require("../middlewareAuth/creatorauth");
 const { CREATOR_JWT_SECRET } = require("../config");
 
 router.post("/signup", async function (req, res) {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
   try {
     await Creatormodel.create({
       username,
       email,
       password,
+      role
     });
     res.json({
       message: "you are signup",
@@ -27,10 +28,11 @@ router.post("/signup", async function (req, res) {
 });
 
 router.post("/signin", async function (req, res) {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
   const user = await Creatormodel.findOne({
     email,
     password,
+    role
   });
   console.log(user);
   if (user) {
@@ -50,7 +52,8 @@ router.post("/signin", async function (req, res) {
   }
 });
 
-router.post("/createCourse", creatorauth, async function (req, res) {
+router.post("/createCourse",creatorauth, async function (req, res) {
+  console.log("auth passed");
   const adminId = req.userId;
   console.log(adminId)
   const { title, description, image, price } = req.body;
@@ -62,11 +65,14 @@ router.post("/createCourse", creatorauth, async function (req, res) {
       price,
       creatorId: adminId,
     });
+    // alert("course created");
+    console.log("course created");
     res.json({
       message: "courses created",
     });
   }
    catch (e) {
+    // alert("course not created");
     console.log(e);
     res.json({
       message: "wrong token",

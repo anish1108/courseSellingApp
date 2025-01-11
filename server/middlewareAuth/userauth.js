@@ -2,9 +2,10 @@ const {USER_JWT_SECRET} = require("../config")
 const jwt = require("jsonwebtoken")
 
 async function userauth(req, res, next){
+    console.log("userauth")
     const token = req.headers.token;
+    // const token = localStorage.getItem("token")
     console.log(token)
-    
     const decoded = await jwt.verify(token, USER_JWT_SECRET)
     console.log(decoded)
     if(decoded){
@@ -16,7 +17,6 @@ async function userauth(req, res, next){
             message:"wrong cred"
         })
     }
-    
 }
 module.exports={
     userauth

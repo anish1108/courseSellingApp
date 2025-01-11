@@ -6,14 +6,16 @@ const ObjectId = mongoose.ObjectId
 const UserSchema = new Schema({
     username: String,
     email: {type:String, unique: true },
-    password: String
+    password: String,
+    role: String
 })
 
 const creatorSchema = new Schema({
     name:String,
     username: String,
     email: String,
-    password: String
+    password: String,
+    role: String
 })
 
 const coursesSchema = new Schema({
